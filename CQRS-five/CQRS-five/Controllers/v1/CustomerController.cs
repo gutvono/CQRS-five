@@ -40,7 +40,9 @@ public sealed class CustomerController(IMediator bus, IDomainNotificationService
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken token)
     {
-        var response = await bus.Send(new DeleteCustomerCommand(id), token);
+        var response = await bus.Send(new DeleteCustomerCommand(id));
+
+        if (response.Equals(default)) return NotFound();
 
         return StatusCode((int)HttpStatusCode.NoContent, new
         {

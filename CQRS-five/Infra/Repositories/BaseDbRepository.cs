@@ -31,14 +31,18 @@ public class BaseDbRepository<TEntity, TId>(IMongoClient client) : IRepository<T
         await Collection.ReplaceOneAsync(x => x.Id!.Equals(entity.Id), entity, _replaceOpt, cancellationToken);
     }
 
-    public virtual async Task<TEntity?> GetSingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate,
-        CancellationToken cancellationToken)
+    public virtual async Task<TEntity?> GetSingleOrDefaultAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken
+    )
     {
         return await Collection.Find(predicate).SingleOrDefaultAsync(cancellationToken);
     }
 
-    public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate,
-        CancellationToken cancellationToken)
+    public virtual async Task<bool> AnyAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken
+    )
     {
         var count = await Collection.CountDocumentsAsync(predicate, _countOpt, cancellationToken);
         return count > 0;
@@ -47,5 +51,10 @@ public class BaseDbRepository<TEntity, TId>(IMongoClient client) : IRepository<T
     public virtual async Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken)
     {
         return await Collection.AsQueryable().ToListAsync(cancellationToken);
+    }
+
+    public virtual async Task DeleteAsync(TId id, CancellationToken cancellationToken)
+    {
+        await Collection.DeleteOneAsync(x => x.Id!.Equals(id), cancellationToken);
     }
 }
