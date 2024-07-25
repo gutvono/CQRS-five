@@ -5,6 +5,7 @@ using Domain.Commands.v1.DeleteCustomer;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Domain.Commands.v1.UpdateCustomerAddress;
 
 namespace CQRS_five.Controllers.v1;
 
@@ -21,6 +22,23 @@ public sealed class CustomerController(IMediator bus, IDomainNotificationService
         {
             Content = response,
             Notification = "Cliente cadastrado com sucesso!!!"
+        });
+    }
+
+    [HttpPatch]
+    public async Task<IActionResult> Patch([FromBody] UpdateCustomerAddressCommand model, CancellationToken token)
+    {
+        var response = await bus.Send(model, token);
+
+        if (response is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new
+        {
+            Content = response,
+            Notification = "Endereço do cliente atualizado com sucesso!!!"
         });
     }
 
@@ -44,10 +62,6 @@ public sealed class CustomerController(IMediator bus, IDomainNotificationService
 
         if (response.Equals(default)) return NotFound();
 
-        return StatusCode((int)HttpStatusCode.NoContent, new
-        {
-            Content = response,
-            Notification = "Cliente excluído com sucesso!!!"
-        });
+        return StatusCode((int)HttpStatusCode.NoContent);
     }
 }

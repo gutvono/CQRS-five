@@ -17,13 +17,13 @@ public class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCo
 
         RuleFor(createCustomerCommand => createCustomerCommand.Name)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório!")
+            .NotEmpty().WithMessage($"O campo {{PropertyName}} é obrigatório!")
             .MinimumLength(MinimumNameLength)
             .WithMessage($"O campo {{PropertyName}} deve conter mais que {MinimumNameLength} caracteres!");
 
         RuleFor(createCustomerCommand => createCustomerCommand.Document)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório!")
+            .NotEmpty().WithMessage($"O campo {{PropertyName}} é obrigatório!")
             .Must(x => _onlyNumbers.Replace(x, string.Empty).Length == MinimumDocLength)
             .WithMessage($"O campo {{PropertyName}} deve conter mais que {MinimumDocLength} caracteres!");
     }

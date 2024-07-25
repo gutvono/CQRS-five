@@ -1,6 +1,5 @@
 ﻿using Domain.ValueObjects.v1;
 using MediatR;
-using System.Net;
 
 namespace Domain.Commands.v1.CreateCustomer;
 

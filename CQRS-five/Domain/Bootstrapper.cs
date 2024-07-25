@@ -7,6 +7,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Domain.Commands.v1.UpdateCustomerAddress;
 
 namespace Domain;
 
@@ -35,6 +36,7 @@ public static class Bootstrapper
         services.AddFluentValidationAutoValidation();
 
         services.AddScoped<IValidator<CreateCustomerCommand>, CreateCustomerCommandValidator>();
+        services.AddScoped<IValidator<UpdateCustomerAddressCommand>, UpdateCustomerAddressCommandValidator>();
         return services;
     }
 }
